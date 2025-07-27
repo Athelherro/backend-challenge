@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const waterJugSolver = require('../services/waterJugSolver');
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
   const { x_capacity, y_capacity, z_amount_wanted } = req.body;
 
   // Input validation
@@ -13,7 +13,7 @@ router.post('/', (req, res) => {
   }
 
   try {
-    const solution = waterJugSolver(x_capacity, y_capacity, z_amount_wanted);
+    const solution = await waterJugSolver(x_capacity, y_capacity, z_amount_wanted);
     if (!solution || solution.length === 0) {
       return res.status(200).json({ solution: 'No solution possible.' });
     }

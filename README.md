@@ -6,6 +6,7 @@ This project implements a RESTful API to solve the classic Water Jug Riddle. Giv
 ## Features
 - RESTful API built with Express.js
 - Efficient BFS algorithm to find the shortest solution
+- **Redis caching for high performance and scalability**
 - Input validation and error handling
 - JSON responses with detailed solution steps
 - Unit and integration tests (Jest & Supertest)
@@ -20,7 +21,10 @@ This project implements a RESTful API to solve the classic Water Jug Riddle. Giv
    ```bash
    npm install
    ```
-3. **Run the server:**
+3. **Start Redis server:**
+   - Make sure you have Redis installed and running on `localhost:6379` (default).
+   - [Redis Quick Start](https://redis.io/docs/getting-started/)
+4. **Run the server:**
    ```bash
    npm run dev
    # or
@@ -113,6 +117,12 @@ The API uses a Breadth-First Search (BFS) algorithm to find the shortest sequenc
 - Transfer water from one jug to the other until one is empty or the other is full
 
 The algorithm explores all possible states, tracking visited states to avoid cycles. If Z is not a multiple of the GCD of X and Y, or Z is greater than both jug capacities, the problem is unsolvable.
+
+## Caching & Scalability
+This API uses **Redis** to cache solutions for common (X, Y, Z) requests. When a request is received, the API first checks Redis for a cached solution. If found, it returns the cached result instantly. If not, it computes the solution, stores it in Redis, and returns it. This greatly improves performance and scalability for repeated or high-volume requests.
+
+- Redis must be running for the API to work.
+- Cached solutions are stored as JSON strings with keys like `jug:2,10,4`.
 
 ## Testing
 - **Run all tests:**
